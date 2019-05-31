@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>http://yoursite.com</loc>
+        <loc>https://QiuTedYuan.github.io/blog</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
     
     <url>
-        <loc>http://yoursite.com/tags/</loc>
-        <lastmod>2019-05-30T08:47:47.094Z</lastmod>
+        <loc>https://QiuTedYuan.github.io/blog/404.html</loc>
+        <lastmod>2019-05-31T09:32:42.522Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>http://yoursite.com/404.html</loc>
-        <lastmod>2019-05-30T08:47:47.063Z</lastmod>
+        <loc>https://QiuTedYuan.github.io/blog/about/</loc>
+        <lastmod>2019-05-31T09:31:05.458Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://QiuTedYuan.github.io/blog/archive/</loc>
+        <lastmod>2019-05-31T09:27:02.122Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://QiuTedYuan.github.io/blog/tags/</loc>
+        <lastmod>2019-05-31T09:26:58.987Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
