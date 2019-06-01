@@ -3,7 +3,7 @@
 
     <sitemap>
         <loc>https://QiuTedYuan.github.io/blog/post-sitemap.xml</loc>
-        <lastmod>2019-06-01T01:50:45.070Z</lastmod>
+        <lastmod>2019-06-01T13:02:35.416Z</lastmod>
     </sitemap>
 
     <sitemap>
@@ -12,13 +12,8 @@
     </sitemap>
 
     <sitemap>
-        <loc>https://QiuTedYuan.github.io/blog/category-sitemap.xml</loc>
-        <lastmod>2019-05-31T08:59:32.863Z</lastmod>
-    </sitemap>
-
-    <sitemap>
         <loc>https://QiuTedYuan.github.io/blog/tag-sitemap.xml</loc>
-        <lastmod>2019-05-31T08:59:32.863Z</lastmod>
+        <lastmod>2019-06-01T13:02:35.416Z</lastmod>
     </sitemap>
 
 </sitemapindex>

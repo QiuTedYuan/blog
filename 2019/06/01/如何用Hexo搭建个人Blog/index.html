@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          article title - Yuan Qiu
+          如何用Hexo搭建个人Blog - Yuan Qiu
         
     </title>
 
-    <link rel="canonical" href="https://QiuTedYuan.github.io/blog/blog/2019/05/30/article-title/">
+    <link rel="canonical" href="https://QiuTedYuan.github.io/blog/blog/2019/06/01/如何用Hexo搭建个人Blog/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/blog/css/bootstrap.min.css">
@@ -69,7 +69,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('')
+            background-image: url('/blog/img/header_img/home-bg.jpg')
             /*post*/
         
     }
@@ -95,11 +95,11 @@
                               <a class="tag" href="/blog/tags/#Blog" title="Blog">Blog</a>
                             
                         </div>
-                        <h1>article title</h1>
+                        <h1>如何用Hexo搭建个人Blog</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by Yuan Qiu on
-                            2019-05-30
+                            2019-06-01
                         </span>
                     </div>
                 
@@ -153,14 +153,14 @@
 
                         
                         <li>
-                            <a href="/blog/archive/">Archives</a>
+                            <a href="/blog/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/blog/tags/">Tags</a>
+                            <a href="/blog/archive/">Archives</a>
                         </li>
                         
                     
@@ -216,21 +216,47 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
+                <p>最近对原有的<a href="https://QiuTedYuan.github.io">个人主页</a>重构时觉得生写Html网页太费力，且无法轻易拓展。故学习了一下<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="noopener">Hexo</a>这个由md文件方便地渲染出Html文本的工具。开发过程中遇到了一些阻碍，总结一下心得。整个搭建过程主要是依赖一篇非常详细的<a href="https://godweiyang.com/2018/04/13/hexo-blog/" target="_blank" rel="noopener">教程</a>。不过由于具体需求有一定出入，这边从零开始总结一个完整的流程。如有因版本更新而不适用的部分，请联系我，会做出调整。</p>
+<h1 id="使用github-pages">使用Github Pages</h1>
+<p><a href="https://github.com/" target="_blank" rel="noopener">Github</a>账号的申请不赘述了。开启<a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a>，只需要新建一个以<code>&lt;username&gt;.github.io</code>为名的repository，private亦可。<br>
+<img src="repo.png" alt="New Repository"><br>
+之后，在<code>Settings</code>中找到Github Pages的选项：<br>
+<img src="gh-pages.png" alt="Github Pages"><br>
+打开对应开关并选择主题即可。注意：空的Repo不存在master branch，无法开启Github Pages，至少需要加入一个文件（如<code>README.md</code>）。</p>
+<h2 id="ltusernamegtgithubio-已被占用">&lt;username&gt;.github.io 已被占用</h2>
+<p>如果默认的链接已经存在<a href="https://QiuTedYuan.github.io">个人主页</a>了，可以另起一个任意名称的Repo（这里以<code>test</code>为例）。<br>
+<img src="test.png" alt="Test Repository"><br>
+此时Pages则会自动被放到<code>&lt;username&gt;.github.io/test/</code>域名下。<br>
+<img src="test-pages.png" alt="Test Pages"><br>
+选择主题后，可以很快捷地生成一个pages页面。<br>
+<img src="test-first.png" alt="Initial Look"></p>
+<h2 id="注意点">注意点</h2>
+<ul>
+<li>可以在<code>test &gt; environment</code>中查看编译情况。确定最新的commit已经编译完成后，若浏览器没有刷新，需要清理缓存，或者换用非常用浏览器查看。</li>
+<li><code>&lt;username&gt;.github.io</code>的页面只能编译master branch，其他页面也可编译master下的<code>/docs</code>目录。但是多branch是不支持的。推荐Enforce HTTPS。</li>
+</ul>
+<h1 id="使用hexo">使用Hexo</h1>
+<p>本文操作系统为64位Windows 10教育版。</p>
+<h2 id="安装git-bash">安装Git Bash</h2>
+<p>原来习惯用<a href="https://tutorials.ubuntu.com/tutorial/tutorial-ubuntu-on-windows" target="_blank" rel="noopener">Ubuntu on Windows</a>，但是过程中遇到了很多问题，因此还是推荐使用<a href="https://gitforwindows.org/" target="_blank" rel="noopener">Git Bash</a>，对于Windows的支持（如文件名、同步锁等）更友好。安装完成后左下角搜索即可打开Git Bash。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git --version</span><br><span class="line">git version <span class="number">2.21</span>.<span class="number">0</span>.windows.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装nodejs">安装Node.js</h2>
+<p>最新版的Node.js请从<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">官网</a>下载。我使用的是原博主提供的v9.11.1版本<a href="https://nodejs.org/dist/v9.11.1/node-v9.11.1-x64.msi" target="_blank" rel="noopener">64位msi包</a>。安装过程简明。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">v9.<span class="number">11.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">5.6</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装hexo">安装Hexo</h2>
+<p>具体请依照<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="noopener">官网</a>，完成前面的步骤后应该只需要<code>npm install -g hexo-cli</code>。会有一些报错，但可以无视。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">&lt;npm-home&gt;\npm\hexo -&gt; &lt;npm-home&gt;\npm\node_modules\hexo-cli\bin\hexo</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@<span class="number">1.2</span>.<span class="number">9</span> (node_modules\hexo-cli\node_modules\fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="keyword">for</span> fsevents@<span class="number">1.2</span>.<span class="number">9</span>: wanted &#123;<span class="string">"os"</span>:<span class="string">"darwin"</span>,<span class="string">"arch"</span>:<span class="string">"any"</span>&#125; (current: &#123;<span class="string">"os"</span>:<span class="string">"win32"</span>,<span class="string">"arch"</span>:<span class="string">"x64"</span>&#125;)</span><br><span class="line"></span><br><span class="line">+ hexo-cli@<span class="number">2.0</span>.<span class="number">0</span></span><br><span class="line">updated <span class="number">1</span> package <span class="keyword">in</span> <span class="number">1.819</span>s</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ hexo -v</span><br><span class="line">hexo-cli: <span class="number">2.0</span>.<span class="number">0</span></span><br><span class="line">os: Windows_NT <span class="number">10.0</span>.<span class="number">17134</span> win32 x64</span><br><span class="line">http_parser: <span class="number">2.8</span>.<span class="number">0</span></span><br><span class="line">node: <span class="number">9.11</span>.<span class="number">1</span></span><br><span class="line">v8: <span class="number">6.2</span>.<span class="number">414.46</span>-node.<span class="number">23</span></span><br><span class="line">uv: <span class="number">1.19</span>.<span class="number">2</span></span><br><span class="line">zlib: <span class="number">1.2</span>.<span class="number">11</span></span><br><span class="line">ares: <span class="number">1.13</span>.<span class="number">0</span></span><br><span class="line">modules: <span class="number">59</span></span><br><span class="line">nghttp2: <span class="number">1.29</span>.<span class="number">0</span></span><br><span class="line">napi: <span class="number">3</span></span><br><span class="line">openssl: <span class="number">1.0</span>.<span class="number">2</span>o</span><br><span class="line">icu: <span class="number">61.1</span></span><br><span class="line">unicode: <span class="number">10.0</span></span><br><span class="line">cldr: <span class="number">33.0</span></span><br><span class="line">tz: <span class="number">2018</span>c</span><br></pre></td></tr></table></figure>
+<h2 id="初始化工作目录">初始化工作目录</h2>
+<p>这边以<code>~/test</code>为例，在对应目录中执行<code>npm install hexo --save</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo --save</span><br><span class="line">npm WARN deprecated core-js@<span class="number">1.2</span>.<span class="number">7</span>: core-js@&lt;<span class="number">2.6</span>.<span class="number">8</span> is no longer maintained. Please, upgrade to core-js@<span class="number">3</span> or at least to actual version of core-js@<span class="number">2</span>.</span><br><span class="line">npm WARN saveError ENOENT: no such file or directory, open <span class="string">'D:\Documents\test\package.json'</span></span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN enoent ENOENT: no such file or directory, open <span class="string">'D:\Documents\test\package.json'</span></span><br><span class="line">npm WARN test No description</span><br><span class="line">npm WARN test No repository field.</span><br><span class="line">npm WARN test No README <span class="keyword">data</span></span><br><span class="line">npm WARN test No license field.</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@<span class="number">1.2</span>.<span class="number">9</span> (node_modules\fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="keyword">for</span> fsevents@<span class="number">1.2</span>.<span class="number">9</span>: wanted &#123;<span class="string">"os"</span>:<span class="string">"darwin"</span>,<span class="string">"arch"</span>:<span class="string">"any"</span>&#125; (current: &#123;<span class="string">"os"</span>:<span class="string">"win32"</span>,<span class="string">"arch"</span>:<span class="string">"x64"</span>&#125;)</span><br><span class="line"></span><br><span class="line">+ hexo@<span class="number">3.8</span>.<span class="number">0</span></span><br><span class="line">added <span class="number">360</span> packages <span class="keyword">in</span> <span class="number">52.959</span>s</span><br><span class="line"></span><br><span class="line">$ ls</span><br><span class="line">node_modules/  package-lock.json</span><br></pre></td></tr></table></figure>
+
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/blog/2019/05/30/hello-world/" data-toggle="tooltip" data-placement="top" title="Hello World">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/blog/2017/03/18/hexo-theme-beantech/" data-toggle="tooltip" data-placement="top" title="[Hexo] Theme BeanTech">Next Post &rarr;</a>
-                        </li>
                     
                 </ul>
 
@@ -249,6 +275,17 @@
             
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用github-pages"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">使用Github Pages</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ltusernamegtgithubio-已被占用"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&lt;username&gt;.github.io 已被占用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#注意点"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">注意点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用hexo"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">使用Hexo</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装git-bash"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">安装Git Bash</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装nodejs"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">安装Node.js</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装hexo"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">安装Hexo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#初始化工作目录"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">初始化工作目录</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
 
                 
             <!-- Sidebar Container -->
@@ -273,21 +310,6 @@
                 
 
                 <!-- Friends Blog -->
-                
-                <hr>
-                <h5>FRIENDS</h5>
-                <ul class="list-inline">
-
-                    
-                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
-                    
-                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
-                    
-                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
-                    
-                        <li><a href="#" target="_blank">It Helps SEO</a></li>
-                    
-                </ul>
                 
             </div>
         </div>
@@ -317,7 +339,7 @@
         anchors.options = {
           visible: 'hover',
           placement: 'left',
-          icon: 'ℬ'
+          icon: '>'
         };
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })
@@ -479,10 +501,10 @@
 
 
 	<a id="rocket" href="#top" class=""></a>
-	<!--script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script-->
-    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+	<script type="text/javascript" src="/blog/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/blog/js/toc.js?v=1.0.0" async=""></script>
 <!-- Image to hack wechat -->
-<!--img src="https://QiuTedYuan.github.io/blog/blog/img/icon_wechat.png" width="0" height="0" /-->
+<!-- img src="https://QiuTedYuan.github.io/blog/blog/img/icon_wechat.png" width="0" height="0" /-->
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
