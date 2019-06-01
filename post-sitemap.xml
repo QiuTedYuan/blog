@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://QiuTedYuan.github.io/blog/2019/05/30/hello-world/</loc>
+        <lastmod>2019-06-01T01:50:45.070Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://QiuTedYuan.github.io/blog/2017/03/18/hexo-theme-beantech/</loc>
         <lastmod>2019-05-31T08:59:32.863Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -17,14 +25,6 @@
     <url>
         <loc>https://QiuTedYuan.github.io/blog/2019/05/30/article-title/</loc>
         <lastmod>2019-05-31T08:59:25.149Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://QiuTedYuan.github.io/blog/2019/05/30/hello-world/</loc>
-        <lastmod>2019-05-30T08:22:42.730Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
