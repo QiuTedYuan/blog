@@ -90,6 +90,10 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/blog/tags/#emacs" title="emacs">emacs</a>
+                            
+                              <a class="tag" href="/blog/tags/#efficiency" title="efficiency">efficiency</a>
+                            
                         </div>
                         <h1>Emacs常用快捷键一览</h1>
                         <h2 class="subheading"></h2>
@@ -208,7 +212,284 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
+                <p>14年的OOP课第一次接触了Emacs，5年过去水平不进反退。现在写code多了，觉得有必要整理一下常用的快捷键，一劳永逸。</p>
+<h1 id="基础类">基础类</h1>
+<h2 id="移动">移动</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C</code>/<code>M-v</code></td>
+<td style="text-align:center">下/上一页</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-l</code></td>
+<td style="text-align:center">当前行居中</td>
+<td style="text-align:left">多次按使当前行置顶/沉底</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-b</code>/<code>f</code></td>
+<td style="text-align:center">前/后一个字母</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-b</code>/<code>f</code></td>
+<td style="text-align:center">前/后一个单词</td>
+<td style="text-align:left">以空格区分，会跳过部分标点</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-p</code>/<code>n</code></td>
+<td style="text-align:center">上/下一行</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-a</code>/<code>e</code></td>
+<td style="text-align:center">行首/尾</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-a</code>/<code>e</code></td>
+<td style="text-align:center">句首/尾</td>
+<td style="text-align:left">以句号/分号为界</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-&lt;</code>/<code>&gt;</code></td>
+<td style="text-align:center">文件首/尾</td>
+<td style="text-align:left">需要用<code>shift</code>打出来</td>
+</tr>
+</tbody>
+</table>
+<h2 id="特殊">特殊</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-u &lt;num&gt; &lt;cmd&gt;</code></td>
+<td style="text-align:center">重复<code>&lt;cmd&gt;</code> <code>&lt;num&gt;</code>次</td>
+<td style="text-align:left">输入多个<code>*</code>比较有用</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-g</code></td>
+<td style="text-align:center">取消正在编辑的命令</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Esc Esc Esc</code></td>
+<td style="text-align:center">退出Recursive Level</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x-c</code></td>
+<td style="text-align:center">关闭Emacs</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-z</code></td>
+<td style="text-align:center">保留Emacs</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>%emacs</code></td>
+<td style="text-align:center">恢复Emacs</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="编辑">编辑</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-d</code></td>
+<td style="text-align:center">删除下一个字符</td>
+<td style="text-align:left">也可以 C-f 退格，多一个键</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-退格</code>/<code>d</code></td>
+<td style="text-align:center">剪切上/下一个词</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-k</code></td>
+<td style="text-align:center">剪切这一行</td>
+<td style="text-align:left">按一次去掉内容，第二次才会去掉换行符 <br> C-u 2 C-k 则会完全删掉两行</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-k</code></td>
+<td style="text-align:center">剪切这一句</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-空格</code>/<code>@</code></td>
+<td style="text-align:center">高亮选中</td>
+<td style="text-align:left">受输入法影响，会有bug，也可以按住 C-<code>shift</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C</code>/<code>M-w</code></td>
+<td style="text-align:center">剪切/复制选中部分</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-y</code></td>
+<td style="text-align:center">粘贴</td>
+<td style="text-align:left">多次C-k会被一并粘贴，且可粘贴多次</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>M-y</code></td>
+<td style="text-align:center">将粘贴内容变为上次剪切的</td>
+<td style="text-align:left">给负数可以逆向滚动</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-/</code>/<code>_</code> <br> 或 <code>C-x u</code></td>
+<td style="text-align:center">撤销</td>
+<td style="text-align:left">重复按可以撤销多次 <br> 按<code>C-g</code>会将操作写入历史，可以redo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="搜索">搜索</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-s</code>/<code>r</code></td>
+<td style="text-align:center">向前/后查找</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>退格</code> (查找中)</td>
+<td style="text-align:center">返回上一个match <br> 或删除查找文字</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>回车</code> (查找中)</td>
+<td style="text-align:center">退出搜索</td>
+<td style="text-align:left">定位到目标点</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文件">文件</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-x-f</code></td>
+<td style="text-align:center">打开/新建文件</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x-s</code></td>
+<td style="text-align:center">保存文件</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x-w</code></td>
+<td style="text-align:center">另存为</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h1 id="多窗口">多窗口</h1>
+<h2 id="切换">切换</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-x 0</code></td>
+<td style="text-align:center">kill当前窗口</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x 1</code></td>
+<td style="text-align:center">仅保留当前窗口</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x 2</code></td>
+<td style="text-align:center">当前窗口上下分裂</td>
+<td style="text-align:left">会复制当前内容</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x 3</code></td>
+<td style="text-align:center">当前窗口横向分裂</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x o</code></td>
+<td style="text-align:center">切换窗口</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-M-v</code> <br> 或者 <code>Esc C-v</code></td>
+<td style="text-align:center">第二窗口翻页</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x 4 C-f</code></td>
+<td style="text-align:center">在新窗口打开文件</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="buffer">Buffer</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>C-x-b</code></td>
+<td style="text-align:center">列出所有buffer</td>
+<td style="text-align:left">会新建一个窗口，可以移动过去打开</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>C-x b</code></td>
+<td style="text-align:center">将当前窗口切换到一个buffer</td>
+<td style="text-align:left">默认最近的</td>
+</tr>
+</tbody>
+</table>
+
                 
 
                 <hr>
@@ -243,7 +524,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#基础类"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">基础类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#移动"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">移动</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#特殊"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">特殊</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#编辑"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">编辑</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#搜索"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">搜索</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">文件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#多窗口"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">多窗口</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#切换"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">切换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#buffer"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Buffer</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -263,6 +544,10 @@
                     <h5><a href="/blog/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/blog/tags/#emacs" title="emacs">emacs</a>
+                        
+                          <a class="tag" href="/blog/tags/#efficiency" title="efficiency">efficiency</a>
+                        
                     </div>
                 </section>
                 
