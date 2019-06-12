@@ -123,7 +123,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/blog/">Yuan Qiu</a>
+            <a class="navbar-brand" href="/blog/../index.html">Homepage</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -325,7 +325,7 @@
 <li>将index.ejs的layout替换为m_page</li>
 <li>新建page.ejs，内容为</li>
 </ul>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">layout: m_page</span><br><span class="line">---</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">%-</span> <span class="attr">page.content</span> %&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line">layout: m_page</span><br><span class="line">---</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">%-</span> <span class="attr">page.content</span> %&gt;</span></span></span><br></pre></td></tr></table></figure>
 <p>所有命令如下:</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ./themes/beantech/layout/</span><br><span class="line">mv page<span class="selector-class">.ejs</span> m_page.ejs</span><br><span class="line">sed -i=<span class="string">""</span> <span class="string">'2s/^.*/layout: m_page/'</span> index.ejs</span><br><span class="line">echo -e <span class="string">"---\nlayout: m_page\n---\n&lt;%- page.content %&gt;"</span> &gt; page.ejs</span><br></pre></td></tr></table></figure>
 <h3 id="无法获得post时间未能复现">无法获得Post时间（未能复现）</h3>
@@ -333,11 +333,12 @@
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: (name || <span class="string">""</span>).toLowerCase is <span class="keyword">not</span> <span class="keyword">a</span> <span class="function"><span class="keyword">function</span></span></span><br></pre></td></tr></table></figure>
 <p>但是似乎高版本修复了，未能复现。可以参见<a href="https://github.com/hexojs/hexo/issues/3505" target="_blank" rel="noopener">issue</a>。是由于没有设置时区引起的。时区的写法参见<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank" rel="noopener">Wiki</a>。</p>
 <h3 id="导航栏顺序不固定">导航栏顺序不固定</h3>
-<p>是由于<code>themes/beantech/layout/_partial/nav.ejs</code>中<code>site.pages</code>没有排序导致的。找到原本的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% site.pages.forEach(function(page)&#123; %&gt;</span><br></pre></td></tr></table></figure>
+<p>是由于<code>./themes/beantech/layout/_partial/nav.ejs</code>中<code>site.pages</code>没有排序导致的。找到原本的代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% site.pages.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">page</span>)</span>&#123; %&gt;</span><br></pre></td></tr></table></figure>
 <p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% site.pages.data.sort(function(a, b) &#123;return a.title &gt; b.title&#125;).forEach(function(page)&#123; %&gt;</span><br></pre></td></tr></table></figure>
-<p>可以修复为按字母表排序。原来已经单独处理了Home保证在第一个。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% site.pages.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;<span class="keyword">return</span> a.title &gt; b.title&#125;).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">page</span>)</span>&#123; %&gt;</span><br></pre></td></tr></table></figure>
+<p>可以修复为按字母表排序。原来已经单独处理了Home保证在第一个。此外，我希望左上角导航到原本的个人主页，因此将同一文件的第12行改为了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a <span class="class"><span class="keyword">class</span></span>=<span class="string">"navbar-brand"</span> href=<span class="string">"&lt;%= config.root %&gt;../index.html"</span>&gt;Homepage&lt;<span class="regexp">/a&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="已知缺陷">已知缺陷</h2>
 <h3 id="contents为none会有滚动条">Contents为none会有滚动条</h3>
 <p>正常使用没有影响，不需要contents关掉就可以了。</p>
@@ -376,6 +377,10 @@
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/blog/2019/06/12/Emacs常用快捷键一览/" data-toggle="tooltip" data-placement="top" title="Emacs常用快捷键一览">&larr; Previous Post</a>
+                        </li>
                     
                     
                 </ul>
