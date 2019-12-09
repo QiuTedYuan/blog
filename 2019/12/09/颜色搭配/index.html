@@ -208,8 +208,68 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <table><tr><td bgcolor="orange"> 背景色是 1 orange</td></tr></table>
-<table><tr><td bgcolor="BlueViolet"> 背景色2 BlueViolet </td></tr></table>
+                <p>写文章的时候经常画图，需要考虑配色方案。好的配色需要区分度够高，尤其是对于接近的曲线。<br>
+颜色同样能传达信息。比如对于下面的颜色已经固化为品牌的象征了。</p>
+<table><tr><td bgcolor="#81D8D0">#81D8D0</td></tr></table>
+虽然最优解可以通过在光谱上均匀取点来得到，但是取得的颜色不标准的话也会不好看。比较方便的做法就是利用已有结果。
+这里总结一下我比较满意的配色，留待日后使用。
+<h1 id="mtr">MTR</h1>
+<p>因为MTR的通常颜色搭配就是以线路交叉考量的，所以比较适合用于画图。选择的颜色比较标准。</p>
+<h2 id="主题色">主题色</h2>
+<p>标题红</p>
+<table><tr><td bgcolor="#AE213B">#AE213B</td></tr></table>
+作为对比色出现的蓝色
+<table><tr><td bgcolor="#11254A">#11254A</td></tr></table>
+<h2 id="线路颜色">线路颜色</h2>
+<p>荃湾线</p>
+<table><tr><td bgcolor="#FF0000">#FF0000</td></tr></table>
+<p>观塘线</p>
+<table><tr><td bgcolor="#1A9431">#1A9431</td></tr></table>
+<p>港岛线</p>
+<table><tr><td bgcolor="#0860A8">#0860A8</td></tr></table>
+<p>南港岛线</p>
+<table><tr><td bgcolor="#B5BD00">#B5BD00</td></tr></table>
+<p>将军澳线</p>
+<table><tr><td bgcolor="#6B208B">#6B208B</td></tr></table>
+<p>东涌线</p>
+<table><tr><td bgcolor="#FE7F1D">#FE7F1D</td></tr></table>
+<p>迪士尼线</p>
+<table><tr><td bgcolor="#F550A6">#F550A6</td></tr></table>
+<p>机场快线</p>
+<table><tr><td bgcolor="#1C7670">#1C7670</td></tr></table>
+<p>东铁线</p>
+<table><tr><td bgcolor="#5EB6E4">#5EB6E4</td></tr></table>
+<p>西铁线</p>
+<table><tr><td bgcolor="#A40084">#A40084</td></tr></table>
+<p>马鞍山线</p>
+<table><tr><td bgcolor="#9A3B26">#9A3B26</td></tr></table>
+<h1 id="nintendo-switch">Nintendo Switch</h1>
+<p>不同于索尼，老任的产品还是比较注重颜色搭配的。特别是switch的joy-con，在配色上做大文章。同时由于产品推陈出新，这部分有望获得更新。</p>
+<h2 id="标准系列">标准系列</h2>
+<p>电光红 (Neon Red)</p>
+<table><tr><td bgcolor="#FF5145">#FF5145</td></tr></table>
+<p>电光蓝 (Neon Blue)</p>
+<table><tr><td bgcolor="#00BBDF">#00BBDF</td></tr></table>
+<p>电光紫 (Neon Purple)</p>
+<table><tr><td bgcolor="#8B26A6">#8B26A6</td></tr></table>
+<p>电光橙 (Neon Orange)</p>
+<table><tr><td bgcolor="#F8B62E">#F8B62E</td></tr></table>
+<p>电光黄 (Neon Yellow)</p>
+<table><tr><td bgcolor="#BAD600">#BAD600</td></tr></table>
+<p>灰色</p>
+<table><tr><td bgcolor="#808080">#808080</td></tr></table>
+<h2 id="喷射战士">喷射战士</h2>
+<p>电光绿 (Neon Green)</p>
+<table><tr><td bgcolor="#19D719">#19D719</td></tr></table>
+<p>电光粉 (Neon Pink)</p>
+<table><tr><td bgcolor="#F02D7D">#F02D7D</td></tr></table>
+<h2 id="pokemon">Pokemon</h2>
+<p>皮卡丘黄</p>
+<table><tr><td bgcolor="#FFDC00">#FFDC00</td></tr></table>
+<p>伊布棕</p>
+<table><tr><td bgcolor="#C88C32">#C88C32</td></tr></table>
+<h1 id="将结果运用到gnuplot中">将结果运用到gnuplot中</h1>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> linetype  <span class="number">1</span> <span class="keyword">lc</span> rgb <span class="string">"#FF0000"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">2</span> <span class="keyword">lc</span> rgb <span class="string">"#1A9431"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">3</span> <span class="keyword">lc</span> rgb <span class="string">"#0860A8"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">4</span> <span class="keyword">lc</span> rgb <span class="string">"#6B208B"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">5</span> <span class="keyword">lc</span> rgb <span class="string">"#5EB6E4"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">6</span> <span class="keyword">lc</span> rgb <span class="string">"#A40084"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">7</span> <span class="keyword">lc</span> rgb <span class="string">"#B5BD00"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">8</span> <span class="keyword">lc</span> rgb <span class="string">"#FE7F1D"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">9</span> <span class="keyword">lc</span> rgb <span class="string">"#1C7670"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">set</span> linetype  <span class="number">10</span> <span class="keyword">lc</span> rgb <span class="string">"#F550A6"</span> <span class="keyword">lw</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
 
                 
 
@@ -245,7 +305,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#mtr"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">MTR</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#主题色"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">主题色</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线路颜色"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">线路颜色</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#nintendo-switch"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Nintendo Switch</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#标准系列"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">标准系列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#喷射战士"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">喷射战士</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#pokemon"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Pokemon</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#将结果运用到gnuplot中"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">将结果运用到gnuplot中</span></a></li></ol>
         
         </div>
       </aside>
