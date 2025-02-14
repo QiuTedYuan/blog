@@ -1,38 +1,203 @@
 <head>
-  <style> body { margin: 0; } </style>
+    <style> body {
+        margin: 0;
+    } </style>
 
-  <script src="//unpkg.com/3d-force-graph"></script>
-  <!--<script src="../../dist/3d-force-graph.js"></script>-->
+    <script src="//unpkg.com/3d-force-graph"></script>
 </head>
 
 <body>
-  <div id="3d-graph"></div>
+<div id="3d-graph"></div>
 
-  <script type="module">
+<script type="module">
     import * as THREE from 'https://esm.sh/three';
+    import SpriteText from "https://esm.sh/three-spritetext";
+    import { scaleOrdinal, schemeRdYlGn, color as d3Color } from 'https://esm.sh/d3';
 
-    const imgs = ['cat.jpg', 'dog.jpg', 'eagle.jpg', 'elephant.jpg', 'grasshopper.jpg', 'octopus.jpg', 'owl.jpg', 'panda.jpg', 'squirrel.jpg', 'tiger.jpg', 'whale.jpg'];
 
-    // Random connected graph
+    const types = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock',
+        'bug', 'ghost', 'steel', 'fire', 'water', 'grass',
+        'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
+    const rates = [[1, 1, 1, 1, 1, 0.5, 1, 0, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1], // normal
+        [2, 1, 0.5, 0.5, 1, 2, 0.5, 0, 2, 1, 1, 1, 1, 0.5, 2, 1, 2, 0.5], // fighting
+        [1, 2, 1, 1, 1, 0.5, 2, 1, 0.5, 1, 1, 2, 0.5, 1, 1, 1, 1, 1], // flying
+        [1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0, 1, 1, 2, 1, 1, 1, 1, 1, 2],  // poison
+        [1, 1, 0, 2, 1, 2, 0.5, 1, 2, 2, 1, 0.5, 2, 1, 1, 1, 1, 1], // ground
+        [1, 0.5, 2, 1, 0.5, 1, 2, 1, 0.5, 2, 1, 1, 1, 1, 2, 1, 1, 1], // rock
+
+        [1, 0.5, 0.5, 0.5, 1, 1, 1, 0.5, 0.5, 0.5, 1, 2, 1, 2, 1, 1, 2, 0.5], // bug
+        [0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 0.5, 1], // ghost
+        [1, 1, 1, 1, 1, 2, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 1, 2, 1, 1, 2], // steel
+        [1, 1, 1, 1, 1, 0.5, 2, 1, 2, 0.5, 0.5, 2, 1, 1, 2, 0.5, 1, 1], // fire
+        [1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 0.5, 0.5, 1, 1, 1, 0.5, 1, 1], // water
+        [1, 1, 0.5, 0.5, 2, 2, 0.5, 1, 0.5, 0.5, 2, 0.5, 1, 1, 1, 0.5, 1, 1], // grass
+
+        [1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 2, 0.5, 0.5, 1, 1, 0.5, 1, 1], // electric
+        [1, 2, 1, 2, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 0.5, 1, 1, 0, 1], // psychic
+        [1, 1, 2, 1, 2, 1, 1, 1, 0.5, 0.5, 0.5, 2, 1, 1, 0.5, 2, 1, 1], // ice
+        [1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 2, 1, 0], // dragon
+        [1, 0.5, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 0.5, 0.5], // dark
+        [1, 2, 1, 0.5, 1, 1, 1, 1, 0.5, 0.5, 1, 1, 1, 1, 1, 2, 2, 1]] // fairy
+
+    function rate_text(i, j) {
+      if (rates[i][j] === 1) return "";
+      if (rates[i][j] === 2) return types[i] + " > " + types[j];
+      if (rates[i][j] === 0.5) return types[j] + " | " + types[i];
+      else return types[j] +  " x " + types[i];
+    }
+
+    const edges = []
+    for (let i = 0; i < types.length; ++i) {
+      for (let j = 0; j <= i; ++j) {
+        if (rates[i][j] === 1 && rates[j][i] === 1) continue;
+        const has_advantage = Math.sign(rates[i][j] - rates[j][i]);
+        const src = (has_advantage > 0) ? i : j;
+        const tar = (has_advantage > 0) ? j : i;
+        let text = rate_text(src,tar);
+        if (j !== i) {
+          const next_text = rate_text(tar,src)
+          if (text && next_text) {
+              text += "\n";
+          }
+          text += next_text;
+        }
+        edges.push({
+          source: src,
+          target: tar,
+          source_color: (has_advantage !== 0) ? "rgb(0,255,0)" : "rgb(200,200,200)",
+          target_color: (has_advantage !== 0) ? "rgb(255,0,0)" : "rgb(200,200,200)",
+          text: text
+        });
+      }
+    }
+
     const gData = {
-      nodes: imgs.map((img, id) => ({ id, img })),
-      links: [...Array(imgs.length).keys()]
-        .filter(id => id)
-        .map(id => ({
-          source: id,
-          target: Math.round(Math.random() * (id-1))
-        }))
+        nodes: types.map((img, id) => ({id, img})),
+        links: edges
     };
 
+    gData.links.forEach(link => {
+      const a = gData.nodes[link.source];
+      const b = gData.nodes[link.target];
+      !a.neighbors && (a.neighbors = []);
+      !b.neighbors && (b.neighbors = []);
+      a.neighbors.push(b);
+      b.neighbors.push(a);
+
+      !a.links && (a.links = []);
+      !b.links && (b.links = []);
+      a.links.push(link);
+      b.links.push(link);
+    });
+
+    const highlightNodes = new Set();
+    const highlightLinks = new Set();
+    let hoverNode = null;
+
     const Graph = new ForceGraph3D(document.getElementById('3d-graph'))
-      .nodeThreeObject(({ img }) => {
-        const imgTexture = new THREE.TextureLoader().load(`./imgs/${img}`);
-        imgTexture.colorSpace = THREE.SRGBColorSpace;
-        const material = new THREE.SpriteMaterial({ map: imgTexture });
-        const sprite = new THREE.Sprite(material);
-        sprite.scale.set(12, 12);
-        return sprite;
-      })
-      .graphData(gData);
-  </script>
+            .nodeThreeObject(node => {
+                const imgTexture = new THREE.TextureLoader().load(`./icons/icons/${node.img}.svg`);
+                imgTexture.colorSpace = THREE.SRGBColorSpace;
+                const material = new THREE.SpriteMaterial({map: imgTexture});
+                material.transparent = true;
+                material.opacity = hoverNode ? (highlightNodes.has(node) ? (node === hoverNode ? 1 : 0.75) : 0.1) : 1;
+                const sprite = new THREE.Sprite(material);
+                sprite.scale.set(12, 12);
+                return sprite;
+            })
+            // .linkThreeObjectExtend(true)
+            .linkThreeObject(link => {
+               const group = new THREE.Group();
+               const colors = new Float32Array([].concat(
+                ...[link.source_color, link.target_color]
+                        .map(d3Color)
+                  .map(({ r, g, b }) => [r, g, b].map(v => v / 255)
+                )));
+
+              const material = new THREE.LineBasicMaterial({ vertexColors: true });
+              material.transparent = true;
+              material.opacity = hoverNode ? (highlightLinks.has(link) ? 1 : 0.1) : 1;
+              const geometry = new THREE.BufferGeometry();
+              geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
+              geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+              group.add(new THREE.Line(geometry, material));
+
+              const sprite = new SpriteText(`${link.text}`);
+              sprite.color = 'lightgrey';
+              sprite.textHeight = 1.5;
+              sprite.material.transparent = true;
+              sprite.material.opacity = hoverNode ? (highlightLinks.has(link) ? 1 : 0.1) : 1;
+              group.add(sprite);
+
+              return group;
+            })
+            .linkPositionUpdate((group, { start, end }) => {
+              const line = group.children[0];
+              const startR = Graph.nodeRelSize();
+              const endR = Graph.nodeRelSize();
+              const lineLen = Math.sqrt(['x', 'y', 'z'].map(dim => Math.pow((end[dim] || 0) - (start[dim] || 0), 2)).reduce((acc, v) => acc + v, 0));
+
+              const linePos = line.geometry.getAttribute('position');
+
+              // calculate coordinate on the node's surface instead of center
+              linePos.set([startR / lineLen, 1 - endR / lineLen].map(t =>
+                ['x', 'y', 'z'].map(dim => start[dim] + (end[dim] - start[dim]) * t)
+              ).flat());
+              linePos.needsUpdate = true;
+
+              const sprite = group.children[1];
+              const middlePos = Object.assign(
+                      ...['x', 'y', 'z'].map(c => ({
+                        [c]: start[c] + (end[c] - start[c]) / 2
+                      }))
+              );
+              Object.assign(sprite.position, middlePos);
+            })
+            .graphData(gData)
+            .onNodeClick(node => {
+                  // no state change
+                  if ((!node && !highlightNodes.size) || (node && hoverNode === node)) return;
+
+                  highlightNodes.clear();
+                  highlightLinks.clear();
+                  if (node) {
+                    highlightNodes.add(node);
+                    node.neighbors.forEach(neighbor => highlightNodes.add(neighbor));
+                    node.links.forEach(link => highlightLinks.add(link));
+                  }
+
+                hoverNode = node || null;
+
+            updateHighlight();
+        })
+        .onLinkClick(link => {
+          highlightNodes.clear();
+          highlightLinks.clear();
+
+          if (link) {
+            highlightLinks.add(link);
+            highlightNodes.add(link.source);
+            highlightNodes.add(link.target);
+          }
+
+          updateHighlight();
+        })
+        .onBackgroundClick( _ => {
+            highlightNodes.clear();
+            highlightLinks.clear();
+            hoverNode = null;
+            updateHighlight();
+        });
+
+
+
+      function updateHighlight() {
+          // trigger update of highlighted objects in scene
+          Graph
+              .nodeThreeObject(Graph.nodeThreeObject())
+              .linkThreeObject(Graph.linkThreeObject());
+              // .linkDirectionalParticles(Graph.linkDirectionalParticles());
+      }
+
+</script>
 </body>
