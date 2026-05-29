@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>通过案例学Git - Yuan Qiu</title><link rel="manifest" href="../../../../manifest.json"><meta name="application-name" content="Yuan Qiu"><meta name="msapplication-TileImage" content="/img/sig.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Yuan Qiu"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Git尽管有着非常详尽的官方教程，但突出一个量大管饱，不太适合现代人阅读习惯，导致新人不爱用。 例如我自己最早写实验的时候，是每次大改就复制出一个新文件夹来保证不丢东西。即便上完Software Engineering，记住的也只有Git Clone&amp;#x2F;Pull&amp;#x2F;Push。 本文的目的，是让读者掌握10%的用法，来应对90%的场景，包括：版本控制、多端同步、协作开发。"><meta property="og:type" content="blog"><meta property="og:title" content="通过案例学Git"><meta property="og:url" content="http://qiutedyuan.github.io/blog/2026/05/28/git/"><meta property="og:site_name" content="Yuan Qiu"><meta property="og:description" content="Git尽管有着非常详尽的官方教程，但突出一个量大管饱，不太适合现代人阅读习惯，导致新人不爱用。 例如我自己最早写实验的时候，是每次大改就复制出一个新文件夹来保证不丢东西。即便上完Software Engineering，记住的也只有Git Clone&amp;#x2F;Pull&amp;#x2F;Push。 本文的目的，是让读者掌握10%的用法，来应对90%的场景，包括：版本控制、多端同步、协作开发。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/initial.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/add.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/diff.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/log.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/blame.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/diff2.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/fallback.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/commits.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/github.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/github-init.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/github-commits.png"><meta property="og:image" content="http://qiutedyuan.github.io/blog/2026/05/28/git/git-tree.png"><meta property="article:published_time" content="2026-05-28T07:05:53.000Z"><meta property="article:modified_time" content="2026-05-29T05:27:56.795Z"><meta property="article:author" content="Yuan Qiu"><meta property="article:tag" content="工具"><meta property="article:tag" content="Git"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://qiutedyuan.github.io/blog/2026/05/28/git/initial.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://qiutedyuan.github.io/blog/2026/05/28/git/"},"headline":"通过案例学Git","image":["http://qiutedyuan.github.io/blog/2026/05/28/git/initial.png","http://qiutedyuan.github.io/blog/2026/05/28/git/add.png","http://qiutedyuan.github.io/blog/2026/05/28/git/diff.png","http://qiutedyuan.github.io/blog/2026/05/28/git/log.png","http://qiutedyuan.github.io/blog/2026/05/28/git/blame.png","http://qiutedyuan.github.io/blog/2026/05/28/git/diff2.png","http://qiutedyuan.github.io/blog/2026/05/28/git/fallback.png","http://qiutedyuan.github.io/blog/2026/05/28/git/commits.png","http://qiutedyuan.github.io/blog/2026/05/28/git/github.png","http://qiutedyuan.github.io/blog/2026/05/28/git/github-init.png","http://qiutedyuan.github.io/blog/2026/05/28/git/github-commits.png","http://qiutedyuan.github.io/blog/2026/05/28/git/git-tree.png"],"datePublished":"2026-05-28T07:05:53.000Z","dateModified":"2026-05-29T05:27:56.795Z","author":{"@type":"Person","name":"Yuan Qiu"},"publisher":{"@type":"Organization","name":"Yuan Qiu","logo":{"@type":"ImageObject","url":"http://qiutedyuan.github.io/img/sig.png"}},"description":"Git尽管有着非常详尽的官方教程，但突出一个量大管饱，不太适合现代人阅读习惯，导致新人不爱用。 例如我自己最早写实验的时候，是每次大改就复制出一个新文件夹来保证不丢东西。即便上完Software Engineering，记住的也只有Git Clone&#x2F;Pull&#x2F;Push。 本文的目的，是让读者掌握10%的用法，来应对90%的场景，包括：版本控制、多端同步、协作开发。"}</script><link rel="canonical" href="http://qiutedyuan.github.io/blog/2026/05/28/git/"><link rel="icon" href="../../../../img/sig.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="../../../../css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="../../../../index.html"><img src="../../../../img/sig.png" alt="Yuan Qiu" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="../../../../index.html">Home</a><a class="navbar-item" href="../../../../archives">Archives</a><a class="navbar-item" href="../../../../categories">Categories</a><a class="navbar-item" href="../../../../tags">Tags</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Back to Main Site" href="../../../../../"><i class="fa-solid fa-person-running"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2026-05-28T07:05:53.000Z" title="2026/5/28 15:05:53">2026-05-28</time>发表</span><span class="level-item"><time dateTime="2026-05-29T05:27:56.795Z" title="2026/5/29 13:27:56">2026-05-29</time>更新</span><span class="level-item"><a class="link-muted" href="../../../../categories/%E5%B7%A5%E5%85%B7/">工具</a><span> / </span><a class="link-muted" href="../../../../categories/%E5%B7%A5%E5%85%B7/Git/">Git</a></span><span class="level-item">27 分钟读完 (大约3982个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">通过案例学Git</h1><div class="content"><p>Git尽管有着非常详尽的<a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2">官方教程</a>，但突出一个量大管饱，不太适合现代人阅读习惯，导致新人不爱用。 例如我自己最早写实验的时候，是每次大改就复制出一个新文件夹来保证不丢东西。即便上完Software Engineering，记住的也只有Git Clone&#x2F;Pull&#x2F;Push。</p>
+<p>本文的目的，是让读者掌握10%的用法，来应对90%的场景，包括：版本控制、多端同步、协作开发。</p>
+<span id="more"></span>
+
+<h1 id="版本控制：昨天还好好的，今天怎么炸了？"><a href="#版本控制：昨天还好好的，今天怎么炸了？" class="headerlink" title="版本控制：昨天还好好的，今天怎么炸了？"></a>版本控制：昨天还好好的，今天怎么炸了？</h1><p>假设用一台机器，独自开发，需不需要用Git呢？设想如下场景，昨天明明代码还好的，结果今天东改一点西改一点，忽然直接炸了，到底是哪儿改错了呢？</p>
+<blockquote>
+<p>Q1. 我这段时间到底改了什么？<br>Q2. 我能不能回到昨天（代码还好的时候）从头再来？</p>
+</blockquote>
+<p>不依赖Git的话，工作留痕是一个解决方案。比如</p>
+<blockquote>
+<p>报表.doc<br>报表v10.doc<br>报表v12_last.doc<br>报表v12_last_final.doc<br>报表v12_last_final_提交版（不再修改）.doc<br>报表v12_last_final_提交版（不再修改）_修改版.doc</p>
+</blockquote>
+<p>显然，命名杂乱是一个问题，此外文件多的时候也很难看出每个版本改了什么。Git的一个最大的作用就是解决这个。</p>
+<h2 id="老生常谈"><a href="#老生常谈" class="headerlink" title="老生常谈"></a>老生常谈</h2><p>现在假设我有个<code>git-tutorial</code>文件夹，里面只有一个文件<code>main.cpp</code>。</p>
+<img src="/blog/2026/05/28/git/initial.png" class="" title="初始文件夹配置">
+
+<h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a><code>git init</code></h3><p>首先把这个文件夹用Git追踪，想象成你雇了一个<strong>G保安</strong>，让他盯好每天有谁进出公司。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git-tutorial&gt; git status</span><br><span class="line">fatal: not a git repository (or any of the parent directories): .git</span><br><span class="line"></span><br><span class="line">$ git-tutorial&gt; git init</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> D:/git-tutorial/.git/</span><br><span class="line"></span><br><span class="line">$ git-tutorial&gt; <span class="built_in">ls</span> .git</span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----         2026/5/28     15:37                hooks</span><br><span class="line">d-----         2026/5/28     15:37                info</span><br><span class="line">d-----         2026/5/28     15:37                objects</span><br><span class="line">d-----         2026/5/28     15:37                refs</span><br><span class="line">-a----         2026/5/28     15:37            130 config</span><br><span class="line">-a----         2026/5/28     15:37             73 description</span><br><span class="line">-a----         2026/5/28     15:37             23 HEAD</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，保安<code>.git</code>文件夹已经就位了。我们让他开始干活，首先为公司员工做个登记。</p>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a><code>git add</code></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git-tutorial&gt; git add main.cpp</span><br><span class="line"></span><br><span class="line">$ git-tutorial&gt; git status</span><br><span class="line">On branch master</span><br><span class="line"></span><br><span class="line">No commits yet</span><br><span class="line"></span><br><span class="line">Changes to be committed:</span><br><span class="line">(use <span class="string">&quot;git rm --cached &lt;file&gt;...&quot;</span> to unstage)</span><br><span class="line">    new file:   main.cpp</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>git add</code>指令，我们的保安已经完全记住了<code>main.cpp</code>这个员工。其实，从这一刻起，文件已经有两个版本了。不过这个我们后续再说。</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a><code>git commit</code></h3><p>确认无误，我们让保安将这个员工录入系统中。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git-tutorial&gt; git commit -m <span class="string">&quot;initial commit&quot;</span></span><br><span class="line">[master (root-commit) 64bee6b] initial commit</span><br><span class="line">1 file changed, 9 insertions(+)</span><br><span class="line">create mode 100644 main.cpp</span><br><span class="line"></span><br><span class="line">git-tutorial&gt; git <span class="built_in">log</span></span><br><span class="line">commit 64bee6bfa36d4e81b5456202f39711920d58be82 (HEAD -&gt; master)</span><br><span class="line">Author: Somebody &lt;some@email.com&gt;</span><br><span class="line">Date:   Thu May 28 15:58:26 2026 +0800</span><br></pre></td></tr></table></figure>
+
+<p>至此，我们的员工<code>main.cpp</code>有了三个版本：真实的他，保安眼中的他，员工系统中的他。只是目前这三个版本是一样的。我们来稍微做些改变来理解这个区别。</p>
+<h2 id="用Git的思维看文件版本"><a href="#用Git的思维看文件版本" class="headerlink" title="用Git的思维看文件版本"></a>用Git的思维看文件版本</h2><h3 id="工作区、暂存区、版本库"><a href="#工作区、暂存区、版本库" class="headerlink" title="工作区、暂存区、版本库"></a>工作区、暂存区、版本库</h3><p>我们先对main.cpp做些改动</p>
+<img src="/blog/2026/05/28/git/add.png" class="" title="修改工作区文件">
+
+<p>可以看到，G保安已经贴心地用蓝色线条为我们标出了目前的改动是8、9两行。换言之，真实的<code>main.cpp</code>和他记忆中的<code>main.cpp</code>不太一样了。</p>
+<table>
+<thead>
+<tr>
+<th>工作区</th>
+<th>暂存区 &#x2F; 版本库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int y &#x3D; 20;<br/>int z &#x3D; 30;<br/>cout &lt;&lt; x + y - z &lt;&lt; endl;</td>
+<td>int y &#x3D; 20;<br/><br/>cout &lt;&lt; x + y &lt;&lt; endl;</td>
+</tr>
+</tbody></table>
+<p>一般，我们把文件系统中的真实文件叫工作区（Working Dir）、保安记得但还没录入的改动叫暂存区（Staging Area）、已录入系统的改动叫版本库（Repo）。<br>我们告诉保安，没错，我就是想这么改，让保安记住这一时刻的文件。这通过<code>git add</code>来实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git-tutorial&gt; git add main.cpp</span><br></pre></td></tr></table></figure>
+
+<img src="/blog/2026/05/28/git/diff.png" class="" title="git diff --cached">
+
+<p>Git保安不仅记住了这次改动，同时他用很简单的方式描述了到底改了啥。</p>
+<p>照理说应该让保安把这个改动录入员工系统了，但这时候我们发现好像写错了，想计算的其实是<code>x+y+z</code>，所以我们又改了下文件。<br>这时候，显然三个版本就各自不同了</p>
+<table>
+<thead>
+<tr>
+<th>工作区</th>
+<th>暂存区</th>
+<th>版本库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x+y+z</td>
+<td>x+y-z</td>
+<td>x+y</td>
+</tr>
+</tbody></table>
+<ul>
+<li>这时候，我们如果执行<code>git commit</code>，那保安将他记住的文件录入系统，版本库里的会是<code>x+y-z</code>。</li>
+<li>如果我们执行<code>git add</code>，那保安会记住当前的文件，暂存区里变成<code>x+y+z</code>。</li>
+</ul>
+<h3 id="小结与建议"><a href="#小结与建议" class="headerlink" title="小结与建议"></a>小结与建议</h3><p>通常而言，Git的开发正常流程是</p>
+<ol>
+<li>修改文件系统中的文件（工作区）</li>
+<li>通过<code>git add</code>将工作区的文件记入暂存区</li>
+<li>通过<code>git commit</code>将暂存区的文件录入版本库</li>
+</ol>
+<p>在”工作区&gt;暂存区&gt;版本库”这个流动中，<code>git add</code>负责前一步，<code>git commit</code>负责后一步。</p>
+<blockquote>
+<p>为什么要区分暂存区和版本库呢？我每个改动都<code>git add</code>秒接<code>git commit</code>不就好了吗？</p>
+</blockquote>
+<p>确实，有人的习惯是事无大小全都<code>git commit -m &quot;1&quot;</code>，有人的习惯是攒波大的，统一<code>git add</code>再<code>git commit</code>，但这都不是好习惯。</p>
+<p><strong>add的目的是防止文件丢失</strong>，比如你不小心删掉了正在编辑的文件，那很容易回到你add的那个时间点，所以add越频繁，你的损失就越小。<strong>add宜多</strong>。</p>
+<p><strong>commit的目的是回顾和与人交流</strong>，时间一久，哪个版本改了什么很容易忘，最容易查找的切入点就是commit记录。如果放眼望去都是毫无意义的message，那查起来就很累了。因此，最好是同一个commit完整地解决一个问题&#x2F;引入一个功能。以后若是回到这个commit，代码应该能直接像现在一样跑起来。<strong>commit宜精</strong>。</p>
+<p>那么，让我们完成这次更改吧，再执行一次<code>git add</code>最后<code>git commit</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git-tutorial&gt; git add main.cpp</span><br><span class="line">$ git-tutorial&gt; git commit -m &quot;changed x+y to x+y+z&quot;</span><br></pre></td></tr></table></figure>
+
+<p>好，我们的当前文件和git版本管理中的再一次一致了！这个状态叫”working tree clean”，没有版本不一致问题了。</p>
+<h2 id="查看改动（谁改了啥）"><a href="#查看改动（谁改了啥）" class="headerlink" title="查看改动（谁改了啥）"></a>查看改动（谁改了啥）</h2><p>我们有几个方法可以查看改动。</p>
+<h3 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a><code>git log</code></h3><img src="/blog/2026/05/28/git/log.png" class="" title="git log">
+
+<p>这里面可以看到完整的commit号以及commit信息，经常用来查阅“我目前这个版本是最新的吗”。</p>
+<h3 id="git-blame"><a href="#git-blame" class="headerlink" title="git blame"></a><code>git blame</code></h3><img src="/blog/2026/05/28/git/blame.png" class="" title="git blame">
+
+<p>给每一行都注上最后commit的是谁，点击即可查看谁对这行做过什么修改。</p>
+<h3 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a><code>git diff</code></h3><ul>
+<li>比较工作区与暂存区的差异：<code>git diff</code></li>
+<li>比较暂存区与最新commit的差异：<code>git diff --cached</code></li>
+</ul>
+<img src="/blog/2026/05/28/git/diff2.png" class="" title="git diff">
+
+<p>现在通常直接用IDE直接勾选对应版本&#x2F;本地，比较直观。可以选择忽略空格空行。</p>
+<h2 id="异常处理（时光倒流）"><a href="#异常处理（时光倒流）" class="headerlink" title="异常处理（时光倒流）"></a>异常处理（时光倒流）</h2><p>正常开发是按<code>git add</code>再<code>git commit</code>的流程去走，文件按工作区&gt;暂存区&gt;版本库方向流动。但是难免有出错的时候，下面针对具体情况解释如何恢复文件，实现时光倒流。</p>
+<h3 id="文件整个变回历史版本：git-checkout"><a href="#文件整个变回历史版本：git-checkout" class="headerlink" title="文件整个变回历史版本：git checkout"></a>文件整个变回历史版本：<code>git checkout</code></h3><p>如果想要把整个文件回退到暂存区（上次add）或版本库（commit）里的版本，注意是个危险操作，未保存的改动就永久消失了。</p>
+<h4 id="变回暂存区版本"><a href="#变回暂存区版本" class="headerlink" title="变回暂存区版本"></a>变回暂存区版本</h4><ul>
+<li>用暂存区代替某个文件：<code>git checkout -- main.cpp</code></li>
+<li>用暂存区代替全部文件：<code>git checkout .</code></li>
+</ul>
+<p>没有add过的话，暂存区等同于最新commit。注意经过checkout后，文件就没有”Changes not staged for commit”了，会变回上次add完以后的版本，从add到当前的变化消失。</p>
+<h4 id="变回历史某个commit的版本"><a href="#变回历史某个commit的版本" class="headerlink" title="变回历史某个commit的版本"></a>变回历史某个commit的版本</h4><ul>
+<li>用commit版本代替某个文件：<code>git checkout &lt;commit&gt; main.cpp</code></li>
+<li>用commit版本代替全部文件：<code>git checkout &lt;commit&gt; .</code></li>
+</ul>
+<p>例如我想把<code>main.cpp</code>文件退回到最初commit，编号64bee6的版本（通常6位就够了），那执行<code>git checkout 64bee6 main.cpp</code>。可以认为上面是忽略了commit号来指代暂存区。如果要回到最新的commit，commit号可以用<code>HEAD</code>代替。</p>
+<blockquote>
+<p>由于历史遗留问题，checkout同时管切分支和退回。比较新的退回可以用restore，不过还是减少记忆成本。</p>
+</blockquote>
+<h3 id="回退工作区部分修改（还没add）"><a href="#回退工作区部分修改（还没add）" class="headerlink" title="回退工作区部分修改（还没add）"></a>回退工作区部分修改（还没add）</h3><img src="/blog/2026/05/28/git/fallback.png" class="" title="回退行">
+
+<p>新的IDE很多都支持局部回退功能，只要点击蓝色的diff窗口，就能进行一行或一段的回退。</p>
+<h3 id="回退第一次add，不再追踪文件：git-rm"><a href="#回退第一次add，不再追踪文件：git-rm" class="headerlink" title="回退第一次add，不再追踪文件：git rm"></a>回退第一次add，不再追踪文件：<code>git rm</code></h3><p>比如新建了一个test文件，并已经执行了<code>git add</code>。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git-tutorial&gt; git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">&quot;git restore --staged &lt;file&gt;...&quot;</span> to unstage)</span><br><span class="line">        new file:   <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不再追踪test，但保留对应文件：<code>git rm --cached test</code></li>
+<li>直接将文件删除掉：<code>git rm -f test</code></li>
+</ul>
+<p>一般来说直接删掉文件的情况比较少。有时候其实文件已经没了，但git留了个空文件，就用这个来去掉。</p>
+<h3 id="加错了文件，还没commit：git-reset"><a href="#加错了文件，还没commit：git-reset" class="headerlink" title="加错了文件，还没commit：git reset"></a>加错了文件，还没commit：<code>git reset</code></h3><p>比如<code>git add</code>错了一个文件（不应该属于这次commit），但是又不想影响本地文件。</p>
+<ul>
+<li>回退一个文件的add：<code>git reset HEAD main.cpp</code></li>
+<li>回退全部文件的add：<code>git reset HEAD</code></li>
+</ul>
+<p>工作区的当前文件不会受影响，相当于没对这些文件做add。</p>
+<h3 id="已经commit了发现错误，想挽回"><a href="#已经commit了发现错误，想挽回" class="headerlink" title="已经commit了发现错误，想挽回"></a>已经commit了发现错误，想挽回</h3><p>commit在英文里有承诺的意思，所以一旦commit，一般而言不要轻易修改。不过视情况轻重，也有不同的应对方式。</p>
+<h4 id="刚刚commit完，发现错了：git-commit-amend"><a href="#刚刚commit完，发现错了：git-commit-amend" class="headerlink" title="刚刚commit完，发现错了：git commit --amend"></a>刚刚commit完，发现错了：<code>git commit --amend</code></h4><p>比如漏加了个文件，第二次add完后用<code>git commit --amend</code>，会跟前一个commit合并为一个，保证commit的简洁。</p>
+<h4 id="回到上一个版本：git-reset"><a href="#回到上一个版本：git-reset" class="headerlink" title="回到上一个版本：git reset"></a>回到上一个版本：<code>git reset</code></h4><p>前面说过，撤销<code>add</code>也是用<code>git reset</code>，这里完整写法相当于<code>git reset --mixed HEAD</code>，区别如下：</p>
+<ul>
+<li><code>git reset --soft</code>：工作区不变，撤销commit，不撤销add</li>
+<li><code>git reset --mixed</code>：工作区不变，撤销commit，撤销add</li>
+<li><code>git reset --hard</code>：删除工作区变更（危险），撤销commit，撤销add（完全回到某个commit的时候）</li>
+</ul>
+<p>这后面跟着的，<code>HEAD</code>是指最新commit，<code>HEAD^</code>相当于<code>HEAD~1</code>，是指上一个。回到上一个的时间，就是把最新的撤回的意思。<br>因此，不改动文件的情况下想撤销一个commit，指令是<code>git reset --soft HEAD^</code>。</p>
+<h1 id="多端同步：我的代码忘在办公室了"><a href="#多端同步：我的代码忘在办公室了" class="headerlink" title="多端同步：我的代码忘在办公室了"></a>多端同步：我的代码忘在办公室了</h1><p>很多时候学Git，上来就讲如何合作开发，经典的先<code>pull</code>再<code>push</code>。但俗话说，一屋不扫何以扫天下，在合作之前，我们先假设自己跟自己开发。换言之，我有同一份代码，有时候在办公室写，有时候在家写。</p>
+<p>当然，你同样可以不用git：每天下班把代码拷回家，在家改完第二天再拷回来。如果某天忘记拷了，要么凭记忆把前一天的改动全再写一遍，要么正大光明地摸鱼一天 —— 很不elegant是吧。</p>
+<p>Git的第二大左右就是多端同步：我办公室和家里的代码永远是同一份。从本质上，早年微软的“公文包”，近些年常见的游戏云存档，都是同一个逻辑，而Git比他们还要便捷。</p>
+<blockquote>
+<p>我们在这里只考虑你自己，是因为你对自己的代码完全拥有主导权：没有人去改你的东西，你知道哪份是新的，用谁覆盖谁。</p>
+</blockquote>
+<h2 id="又一个文件版本：云端"><a href="#又一个文件版本：云端" class="headerlink" title="又一个文件版本：云端"></a>又一个文件版本：云端</h2><p>用云存档的思维就很好理解，我们现在又多了一个版本：云端的<code>main.cpp</code>。以前把它叫远程仓库，现在咱们经常说的还是云。</p>
+<ul>
+<li>如果本地的比较新，那把本地的上传上去，两边就同步了。</li>
+<li>如果云端的比较新，那把云端的下载下来，两边就同步了。</li>
+</ul>
+<p>怎么判断新旧呢？我们把commit log看成一条线，如果在一边的最后一条commit之后，另一边还有其他commits，那新旧就很明显了。</p>
+<img src="/blog/2026/05/28/git/commits.png" class="" title="commit树">
+
+<blockquote>
+<p>如果两边各自有不同的commit，那就不是简单的新旧关系了，我们留到后面解决。</p>
+</blockquote>
+<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><h3 id="首次绑定：git-remote"><a href="#首次绑定：git-remote" class="headerlink" title="首次绑定：git remote"></a>首次绑定：<code>git remote</code></h3><p>首次同步，我们需要在云端建立一个对应的Repo。GitHub是其中（最常见的）一种选择。</p>
+<img src="/blog/2026/05/28/git/github.png" class="" title="新建Repo">
+
+<p>创建完之后，GitHub会提示你怎么做同步，跟着做就好了。</p>
+<img src="/blog/2026/05/28/git/github-init.png" class="" title="首次同步">
+
+<p>完成后，我们就能在网页端看到这个Repo了。</p>
+<img src="/blog/2026/05/28/git/github-commits.png" class="" title="远程仓库中的Commits">
+
+<h3 id="本地上云：git-push"><a href="#本地上云：git-push" class="headerlink" title="本地上云：git push"></a>本地上云：<code>git push</code></h3><p>如果本地比云端新，那么简单地用<code>git push</code>把本地新改动同步到云端即可。</p>
+<h3 id="确信覆盖：git-push-f"><a href="#确信覆盖：git-push-f" class="headerlink" title="确信覆盖：git push -f"></a>确信覆盖：<code>git push -f</code></h3><p><code>push</code>过程中，如果云端包含了本地没有的commits，那就无法将本地Commits简单地附在Commit log最后面，会被拒绝。 广义上来说，这就是冲突处理，也是最复杂的部分，我们暂且不提。因为我们现在是个人开发，这几乎只会出现在一种情况下。</p>
+<blockquote>
+<p>准备下班，执行了<code>git commit</code>和<code>git push</code>，然后发现漏了一个小点，懒得再<code>push</code>一次，用了<code>git commit --amend</code>。</p>
+</blockquote>
+<p>如果你是个新手，完全可以通过多次commit+push来避免这种情况，但是commit log会很混乱。由于<code>git commit --amend</code>产生的commit与已经推上云端的不同，直接push会被拒绝。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git-tutorial&gt; git push</span><br><span class="line">To https://YourRemote/Repo.git</span><br><span class="line">! [rejected]        main -&gt; main (non-fast-forward)</span><br><span class="line">error: failed to push some refs to <span class="string">&#x27;https://YourRemote/Repo.git&#x27;</span></span><br><span class="line">hint: Updates were rejected because the tip of your current branch is behind</span><br><span class="line">hint: its remote counterpart. If you want to integrate the remote changes,</span><br><span class="line">hint: use <span class="string">&#x27;git pull&#x27;</span> before pushing again.</span><br><span class="line">hint: See the <span class="string">&#x27;Note about fast-forwards&#x27;</span> <span class="keyword">in</span> <span class="string">&#x27;git push --help&#x27;</span> <span class="keyword">for</span> details.</span><br></pre></td></tr></table></figure>
+
+<p>从Git树也能看出来，目前产生了一个分叉。</p>
+<img src="/blog/2026/05/28/git/git-tree.png" class="" title="由于amend导致的分叉">
+
+<p>由于我们<strong>非常确定本地的版本以及是最新的</strong>，以及<strong>没有人会同时修改这一份代码</strong>，所以我们直接用本地的commit覆盖掉远程的。这个操作是<code>git push -f</code>。推完之后，本地和远程再次统一，远程的上一个commit消失了。</p>
+<p>作为新手，你几乎只会在这种情况下需要使用<code>-f</code>。</p>
+<h3 id="云端下载：git-fetch"><a href="#云端下载：git-fetch" class="headerlink" title="云端下载：git fetch"></a>云端下载：<code>git fetch</code></h3></div><div class="article-licensing box"><div class="licensing-title"><p>通过案例学Git</p><p><a href="http://qiutedyuan.github.io/blog/2026/05/28/git/">http://qiutedyuan.github.io/blog/2026/05/28/git/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Yuan Qiu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2026-05-28</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2026-05-29</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="../../../../tags/%E5%B7%A5%E5%85%B7/">工具</a><a class="link-muted mr-2" rel="tag" href="../../../../tags/Git/">Git</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="../../../../2025/09/01/travel/"><span class="level-item">日本7日行攻略（2025）</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="../../../../img/sticker.jpg" alt="邱远 / Yuan Qiu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">邱远 / Yuan Qiu</p><p class="is-size-6 is-block">Young Chief Professor @ SEU</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Nanjing, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="../../../../archives/"><p class="title">19</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="../../../../categories/"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="../../../../tags/"><p class="title">5</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Github" href="https://github.com/qiutedyuan"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Facebook" href="https://facebook.com/qiu.ted.yuan"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Linkedin" href="https://linkedin.com/in/yuan-qiu-83651910a"><i class="fa-brands fa-linkedin"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="ORCID" href="https://orcid.org/0000-0002-3488-6386"><i class="fa-brands fa-orcid"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="../../../../categories/%E5%8D%95%E8%AF%8D/"><span class="level-start"><span class="level-item">单词</span></span><span class="level-end"><span class="level-item tag">13</span></span></a><ul><li><a class="level is-mobile" href="../../../../categories/%E5%8D%95%E8%AF%8D/%E3%81%82/"><span class="level-start"><span class="level-item">あ</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile" href="../../../../categories/%E5%8D%95%E8%AF%8D/%E3%81%84/"><span class="level-start"><span class="level-item">い</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></li><li><a class="level is-mobile" href="../../../../categories/%E5%B7%A5%E5%85%B7/"><span class="level-start"><span class="level-item">工具</span></span><span class="level-end"><span class="level-item tag">4</span></span></a><ul><li><a class="level is-mobile" href="../../../../categories/%E5%B7%A5%E5%85%B7/Blog/"><span class="level-start"><span class="level-item">Blog</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../categories/%E5%B7%A5%E5%85%B7/Git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../categories/%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83/"><span class="level-start"><span class="level-item">环境</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../categories/%E5%B7%A5%E5%85%B7/%E7%94%BB%E5%9B%BE/"><span class="level-start"><span class="level-item">画图</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li><li><a class="level is-mobile" href="../../../../categories/%E6%97%85%E6%B8%B8/"><span class="level-start"><span class="level-item">旅游</span></span><span class="level-end"><span class="level-item tag">1</span></span></a><ul><li><a class="level is-mobile" href="../../../../categories/%E6%97%85%E6%B8%B8/%E6%97%A5%E6%9C%AC/"><span class="level-start"><span class="level-item">日本</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2026-05-28T07:05:53.000Z">2026-05-28</time></p><p class="title"><a href="">通过案例学Git</a></p><p class="categories"><a href="../../../../categories/%E5%B7%A5%E5%85%B7/">工具</a> / <a href="../../../../categories/%E5%B7%A5%E5%85%B7/Git/">Git</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-09-01T03:22:13.000Z">2025-09-01</time></p><p class="title"><a href="../../../../2025/09/01/travel/">日本7日行攻略（2025）</a></p><p class="categories"><a href="../../../../categories/%E6%97%85%E6%B8%B8/">旅游</a> / <a href="../../../../categories/%E6%97%85%E6%B8%B8/%E6%97%A5%E6%9C%AC/">日本</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-02-15T07:30:15.000Z">2025-02-15</time></p><p class="title"><a href="../../../../2025/02/15/pokemon/">宝可梦属性克制图</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-12T13:39:14.000Z">2024-12-12</time></p><p class="title"><a href="../../../../2024/12/12/jp-is/">日语单词整理——いさ</a></p><p class="categories"><a href="../../../../categories/%E5%8D%95%E8%AF%8D/">单词</a> / <a href="../../../../categories/%E5%8D%95%E8%AF%8D/%E3%81%84/">い</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-08T13:39:14.000Z">2024-12-08</time></p><p class="title"><a href="../../../../2024/12/08/jp-ik/">日语单词整理——いか</a></p><p class="categories"><a href="../../../../categories/%E5%8D%95%E8%AF%8D/">单词</a> / <a href="../../../../categories/%E5%8D%95%E8%AF%8D/%E3%81%84/">い</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="../../../../archives/2026/05/"><span class="level-start"><span class="level-item">五月 2026</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2025/09/"><span class="level-start"><span class="level-item">九月 2025</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2025/02/"><span class="level-start"><span class="level-item">二月 2025</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2024/12/"><span class="level-start"><span class="level-item">十二月 2024</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2024/11/"><span class="level-start"><span class="level-item">十一月 2024</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2024/08/"><span class="level-start"><span class="level-item">八月 2024</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2020/01/"><span class="level-start"><span class="level-item">一月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2019/12/"><span class="level-start"><span class="level-item">十二月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="../../../../archives/2019/06/"><span class="level-start"><span class="level-item">六月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="../../../../tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="../../../../tags/%E5%B7%A5%E5%85%B7/"><span class="tag">工具</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="../../../../tags/%E6%97%85%E6%B8%B8/"><span class="tag">旅游</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="../../../../tags/%E6%97%A5%E8%AF%AD/"><span class="tag">日语</span><span class="tag">13</span></a></div><div class="control"><a class="tags has-addons" href="../../../../tags/%E6%B8%B8%E6%88%8F/"><span class="tag">游戏</span><span class="tag">1</span></a></div></div></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#版本控制：昨天还好好的，今天怎么炸了？"><span class="level-left"><span class="level-item">1</span><span class="level-item">版本控制：昨天还好好的，今天怎么炸了？</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#老生常谈"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">老生常谈</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#git-init"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">git init</span></span></a></li><li><a class="level is-mobile" href="#git-add"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">git add</span></span></a></li><li><a class="level is-mobile" href="#git-commit"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">git commit</span></span></a></li></ul></li><li><a class="level is-mobile" href="#用Git的思维看文件版本"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">用Git的思维看文件版本</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#工作区、暂存区、版本库"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">工作区、暂存区、版本库</span></span></a></li><li><a class="level is-mobile" href="#小结与建议"><span class="level-left"><span class="level-item">1.2.2</span><span class="level-item">小结与建议</span></span></a></li></ul></li><li><a class="level is-mobile" href="#查看改动（谁改了啥）"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">查看改动（谁改了啥）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#git-log"><span class="level-left"><span class="level-item">1.3.1</span><span class="level-item">git log</span></span></a></li><li><a class="level is-mobile" href="#git-blame"><span class="level-left"><span class="level-item">1.3.2</span><span class="level-item">git blame</span></span></a></li><li><a class="level is-mobile" href="#git-diff"><span class="level-left"><span class="level-item">1.3.3</span><span class="level-item">git diff</span></span></a></li></ul></li><li><a class="level is-mobile" href="#异常处理（时光倒流）"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">异常处理（时光倒流）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#文件整个变回历史版本：git-checkout"><span class="level-left"><span class="level-item">1.4.1</span><span class="level-item">文件整个变回历史版本：git checkout</span></span></a></li><li><a class="level is-mobile" href="#回退工作区部分修改（还没add）"><span class="level-left"><span class="level-item">1.4.2</span><span class="level-item">回退工作区部分修改（还没add）</span></span></a></li><li><a class="level is-mobile" href="#回退第一次add，不再追踪文件：git-rm"><span class="level-left"><span class="level-item">1.4.3</span><span class="level-item">回退第一次add，不再追踪文件：git rm</span></span></a></li><li><a class="level is-mobile" href="#加错了文件，还没commit：git-reset"><span class="level-left"><span class="level-item">1.4.4</span><span class="level-item">加错了文件，还没commit：git reset</span></span></a></li><li><a class="level is-mobile" href="#已经commit了发现错误，想挽回"><span class="level-left"><span class="level-item">1.4.5</span><span class="level-item">已经commit了发现错误，想挽回</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#多端同步：我的代码忘在办公室了"><span class="level-left"><span class="level-item">2</span><span class="level-item">多端同步：我的代码忘在办公室了</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#又一个文件版本：云端"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">又一个文件版本：云端</span></span></a></li><li><a class="level is-mobile" href="#常规操作"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">常规操作</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#首次绑定：git-remote"><span class="level-left"><span class="level-item">2.2.1</span><span class="level-item">首次绑定：git remote</span></span></a></li><li><a class="level is-mobile" href="#本地上云：git-push"><span class="level-left"><span class="level-item">2.2.2</span><span class="level-item">本地上云：git push</span></span></a></li><li><a class="level is-mobile" href="#确信覆盖：git-push-f"><span class="level-left"><span class="level-item">2.2.3</span><span class="level-item">确信覆盖：git push -f</span></span></a></li><li><a class="level is-mobile" href="#云端下载：git-fetch"><span class="level-left"><span class="level-item">2.2.4</span><span class="level-item">云端下载：git fetch</span></span></a></li></ul></li></ul></li></ul></div></div><script src="../../../../js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="../../../../index.html"><img src="../../../../img/sig.png" alt="Yuan Qiu" height="28"></a><p class="is-size-7"><span>&copy; 2026 Yuan Qiu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="../../../../js/column.js"></script><script src="../../../../js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="../../../../js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script data-pjax src="../../../../js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script data-pjax src="../../../../js/insight.js" defer></script><script data-pjax>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"../../../../content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
